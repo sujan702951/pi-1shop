@@ -1,291 +1,3522 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>1shop.pi Marketplace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description" content="1Shop.pi - Pi Powered Online Marketplace">
+
+<title>1Shop.pi | Pi Powered Marketplace</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#f4f4f4}
 
-/* header */
-header{
-background:#131921;
-color:white;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 20px;
+/* =========================================================
+   1SHOP.PI MARKETPLACE
+   Amazon-style marketplace layout
+   ========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-nav a{
-color:white;
-margin:0 10px;
-text-decoration:none
+:root{
+    --nav:#131921;
+    --nav2:#232f3e;
+    --yellow:#ffb400;
+    --yellow2:#ff9900;
+    --blue:#007185;
+    --green:#198754;
+    --red:#d32f2f;
+    --bg:#eaeded;
+    --white:#ffffff;
+    --text:#17202a;
+    --muted:#667085;
+    --border:#ddd;
+    --shadow:0 2px 8px rgba(0,0,0,.12);
 }
 
-.logo{font-size:22px;font-weight:bold}
-
-.cart{cursor:pointer}
-
-/* banner */
-.banner{
-background:#232f3e;
-color:white;
-text-align:center;
-padding:40px
+html{
+    scroll-behavior:smooth;
 }
 
-/* products */
-.container{padding:20px}
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px
+body{
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    background:var(--bg);
+    color:var(--text);
 }
 
-.card{
-background:white;
-padding:15px;
-border-radius:8px;
-text-align:center;
-box-shadow:0 2px 5px rgba(0,0,0,.2)
-}
+/* =========================================================
+   GENERAL
+   ========================================================= */
 
-.card img{
-width:100%;
-height:150px;
-object-fit:cover
+button,
+input,
+select,
+textarea{
+    font-family:inherit;
 }
 
 button{
-background:#ff9900;
-border:none;
-padding:10px;
-border-radius:5px;
-cursor:pointer;
-margin-top:10px
+    cursor:pointer;
 }
 
-/* popup */
-.popup{
-display:none;
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:white;
-padding:20px;
-border-radius:8px;
-box-shadow:0 0 10px rgba(0,0,0,.5)
+a{
+    text-decoration:none;
+    color:inherit;
 }
 
-/* seller form */
-.sell{
-background:white;
-padding:20px;
-margin:20px;
-border-radius:8px
+.container{
+    max-width:1450px;
+    margin:auto;
+    padding:0 18px;
 }
 
-footer{
-background:#131921;
-color:white;
-text-align:center;
-padding:10px
+/* =========================================================
+   TOP HEADER
+   ========================================================= */
+
+.header{
+    background:var(--nav);
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:9px 18px;
+    min-height:64px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    min-width:145px;
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:-.5px;
+}
+
+.logo span{
+    color:var(--yellow);
+}
+
+.logo small{
+    display:block;
+    font-size:8px;
+    letter-spacing:2px;
+    color:#ddd;
+}
+
+/* location */
+
+.location{
+    font-size:11px;
+    color:#ccc;
+    white-space:nowrap;
+}
+
+.location strong{
+    display:block;
+    color:#fff;
+    font-size:13px;
+}
+
+/* SEARCH */
+
+.search-box{
+    flex:1;
+    display:flex;
+    max-width:760px;
+    height:43px;
+}
+
+.search-box select{
+    width:65px;
+    border:0;
+    background:#f3f3f3;
+    padding:0 5px;
+    border-radius:5px 0 0 5px;
+}
+
+.search-box input{
+    flex:1;
+    border:0;
+    padding:0 14px;
+    font-size:15px;
+    outline:none;
+}
+
+.search-btn{
+    width:54px;
+    border:0;
+    background:var(--yellow);
+    font-size:21px;
+    border-radius:0 5px 5px 0;
+}
+
+/* account */
+
+.account{
+    font-size:11px;
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.account strong{
+    display:block;
+    font-size:14px;
+}
+
+/* cart */
+
+.cart-button{
+    color:#fff;
+    border:0;
+    background:none;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+.cart-icon{
+    font-size:27px;
+    vertical-align:middle;
+}
+
+.cart-count{
+    color:var(--yellow);
+    font-size:17px;
+    font-weight:bold;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.main-nav{
+    background:var(--nav2);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:25px;
+    padding:10px 18px;
+    overflow-x:auto;
+    white-space:nowrap;
+    font-size:14px;
+}
+
+.main-nav a:hover{
+    text-decoration:underline;
+}
+
+.menu-button{
+    font-weight:bold;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+    min-height:310px;
+    max-width:1450px;
+    margin:auto;
+    padding:55px 7%;
+    color:#fff;
+
+    background:
+        linear-gradient(
+            110deg,
+            #111c2c,
+            #2f435b
+        );
+
+    display:flex;
+    align-items:center;
+}
+
+.hero-content{
+    max-width:700px;
+}
+
+.hero-badge{
+    display:inline-block;
+    background:rgba(255,255,255,.12);
+    padding:7px 13px;
+    border-radius:20px;
+    font-size:12px;
+    margin-bottom:15px;
+}
+
+.hero h1{
+    font-size:46px;
+    line-height:1.05;
+    margin-bottom:15px;
+}
+
+.hero h1 span{
+    color:var(--yellow);
+}
+
+.hero p{
+    color:#dce4ec;
+    line-height:1.6;
+    font-size:16px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+    flex-wrap:wrap;
+}
+
+.primary-btn{
+    border:0;
+    background:var(--yellow);
+    padding:13px 23px;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.secondary-btn{
+    border:1px solid #fff;
+    background:transparent;
+    color:#fff;
+    padding:13px 23px;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+/* =========================================================
+   QUICK BOXES
+   ========================================================= */
+
+.quick-boxes{
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+    gap:15px;
+    margin-top:-30px;
+    position:relative;
+}
+
+.quick-box{
+    background:#fff;
+    padding:20px;
+    border-radius:5px;
+    box-shadow:var(--shadow);
+}
+
+.quick-icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.quick-box h3{
+    margin-bottom:5px;
+}
+
+.quick-box p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section{
+    margin:30px 0;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.section-title h2{
+    font-size:24px;
+}
+
+.view-all{
+    color:var(--blue);
+    font-size:14px;
+    cursor:pointer;
+}
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.categories{
+    display:grid;
+    grid-template-columns:
+        repeat(8,1fr);
+    gap:12px;
+}
+
+.category{
+    background:#fff;
+    min-height:125px;
+    border-radius:5px;
+    box-shadow:0 1px 5px rgba(0,0,0,.08);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.category:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow);
+}
+
+.category-icon{
+    font-size:39px;
+    margin-bottom:9px;
+}
+
+.category strong{
+    font-size:13px;
+}
+
+/* =========================================================
+   PRODUCTS
+   ========================================================= */
+
+.product-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(5,1fr);
+    gap:14px;
+}
+
+.product{
+    background:#fff;
+    border-radius:5px;
+    padding:13px;
+    box-shadow:0 1px 5px rgba(0,0,0,.08);
+    position:relative;
+    transition:.2s;
+}
+
+.product:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow);
+}
+
+.product-image{
+    height:190px;
+    border-radius:4px;
+    background:
+        linear-gradient(
+            135deg,
+            #f5f6f7,
+            #dce1e5
+        );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:75px;
+    margin-bottom:12px;
+}
+
+.product-badge{
+    position:absolute;
+    top:20px;
+    left:20px;
+    background:#cc0c39;
+    color:#fff;
+    padding:5px 8px;
+    font-size:10px;
+    border-radius:3px;
+}
+
+.product h3{
+    font-size:15px;
+    line-height:1.35;
+    min-height:40px;
+}
+
+.rating{
+    margin-top:6px;
+    color:#f5a400;
+    font-size:14px;
+}
+
+.rating-count{
+    color:#667085;
+    font-size:11px;
+}
+
+.product-price{
+    font-size:23px;
+    font-weight:bold;
+    margin:9px 0;
+}
+
+.product-price small{
+    font-size:13px;
+}
+
+.product-old{
+    color:#777;
+    text-decoration:line-through;
+    font-size:12px;
+    margin-left:5px;
+}
+
+.add-cart{
+    width:100%;
+    border:0;
+    background:var(--yellow);
+    padding:10px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.buy-now{
+    width:100%;
+    border:0;
+    background:#ffd814;
+    padding:10px;
+    border-radius:20px;
+    font-weight:bold;
+    margin-top:7px;
+}
+
+/* =========================================================
+   DEAL BANNER
+   ========================================================= */
+
+.deal-banner{
+    background:#fff;
+    padding:25px;
+    border-radius:5px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:var(--shadow);
+}
+
+.deal-banner h2{
+    font-size:28px;
+}
+
+.deal-banner p{
+    color:var(--muted);
+    margin-top:5px;
+}
+
+/* =========================================================
+   SELLER SECTION
+   ========================================================= */
+
+.seller-section{
+    background:#fff;
+    border-radius:5px;
+    padding:25px;
+    box-shadow:var(--shadow);
+}
+
+.seller-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(3,1fr);
+    gap:15px;
+}
+
+.seller-card{
+    border:1px solid var(--border);
+    padding:20px;
+    border-radius:5px;
+}
+
+.seller-card h3{
+    margin-bottom:8px;
+}
+
+.seller-card p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* =========================================================
+   TRUST
+   ========================================================= */
+
+.trust-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+    gap:15px;
+}
+
+.trust-card{
+    background:#fff;
+    padding:23px;
+    border-radius:5px;
+    text-align:center;
+    box-shadow:0 1px 5px rgba(0,0,0,.08);
+}
+
+.trust-card .icon{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.trust-card p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+}
+
+/* =========================================================
+   CART DRAWER
+   ========================================================= */
+
+.cart-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    z-index:1998;
+}
+
+.cart-overlay.active{
+    display:block;
+}
+
+.cart-drawer{
+    position:fixed;
+    right:-440px;
+    top:0;
+    width:420px;
+    max-width:92%;
+    height:100vh;
+    background:#fff;
+    z-index:1999;
+    transition:.3s;
+    padding:20px;
+    overflow-y:auto;
+}
+
+.cart-drawer.active{
+    right:0;
+}
+
+.cart-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+    padding-bottom:15px;
+}
+
+.close-cart{
+    border:0;
+    background:#eee;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    font-size:20px;
+}
+
+.cart-item{
+    display:flex;
+    gap:12px;
+    padding:15px 0;
+    border-bottom:1px solid #eee;
+}
+
+.cart-item-image{
+    width:65px;
+    height:65px;
+    background:#f1f2f3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    border-radius:5px;
+}
+
+.cart-item-info{
+    flex:1;
+}
+
+.cart-item-info h4{
+    font-size:14px;
+}
+
+.cart-item-price{
+    margin-top:5px;
+    font-weight:bold;
+}
+
+.remove-item{
+    border:0;
+    background:none;
+    color:var(--red);
+    font-size:13px;
+}
+
+.cart-summary{
+    margin-top:20px;
+    padding-top:15px;
+    border-top:2px solid #ddd;
+}
+
+.cart-total{
+    display:flex;
+    justify-content:space-between;
+    font-size:21px;
+    font-weight:bold;
+}
+
+.pi-pay-btn{
+    width:100%;
+    border:0;
+    background:var(--green);
+    color:#fff;
+    padding:14px;
+    margin-top:15px;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:3000;
+    padding:15px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-box{
+    background:#fff;
+    width:520px;
+    max-width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    border-radius:8px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-close{
+    border:0;
+    background:#eee;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+}
+
+.form-group{
+    margin-bottom:14px;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:11px;
+    border:1px solid #aaa;
+    border-radius:4px;
+    outline:none;
+}
+
+.form-group textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.submit-btn{
+    width:100%;
+    border:0;
+    background:var(--yellow);
+    padding:12px;
+    border-radius:4px;
+    font-weight:bold;
+}
+
+/* =========================================================
+   SELLER DASHBOARD
+   ========================================================= */
+
+.dashboard{
+    display:none;
+}
+
+.dashboard.active{
+    display:block;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+    gap:15px;
+}
+
+.dashboard-card{
+    background:#fff;
+    padding:20px;
+    border-radius:5px;
+    box-shadow:var(--shadow);
+}
+
+.dashboard-card span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.dashboard-card strong{
+    display:block;
+    font-size:27px;
+    margin-top:8px;
+}
+
+.dashboard-actions{
+    display:grid;
+    grid-template-columns:
+        repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.dashboard-action{
+    background:#fff;
+    border:1px solid var(--border);
+    padding:20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.dashboard-action:hover{
+    background:#f8f9fa;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer{
+    background:var(--nav2);
+    color:#fff;
+    margin-top:50px;
+}
+
+.footer-top{
+    padding:35px 20px;
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+    gap:25px;
+    max-width:1400px;
+    margin:auto;
+}
+
+.footer-column h3{
+    font-size:15px;
+    margin-bottom:13px;
+}
+
+.footer-column a{
+    display:block;
+    color:#ddd;
+    font-size:13px;
+    margin:8px 0;
+}
+
+.footer-bottom{
+    border-top:1px solid #3d4a58;
+    padding:20px;
+    text-align:center;
+    color:#bbb;
+    font-size:12px;
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%);
+    background:#17202a;
+    color:#fff;
+    padding:13px 20px;
+    border-radius:5px;
+    display:none;
+    z-index:5000;
+    box-shadow:var(--shadow);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:1100px){
+
+    .categories{
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+    .product-grid{
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+    .trust-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+@media(max-width:800px){
+
+    .header{
+        flex-wrap:wrap;
+    }
+
+    .location{
+        display:none;
+    }
+
+    .search-box{
+        order:5;
+        width:100%;
+        max-width:none;
+    }
+
+    .quick-boxes{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .categories{
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+    .product-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .seller-grid{
+        grid-template-columns:1fr;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .dashboard-actions{
+        grid-template-columns:1fr;
+    }
+
+    .footer-top{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+}
+
+@media(max-width:520px){
+
+    .header{
+        padding:8px 10px;
+        gap:8px;
+    }
+
+    .logo{
+        min-width:auto;
+        font-size:21px;
+    }
+
+    .account{
+        display:none;
+    }
+
+    .cart-button{
+        margin-left:auto;
+    }
+
+    .main-nav{
+        gap:18px;
+        padding:9px 12px;
+        font-size:12px;
+    }
+
+    .hero{
+        min-height:270px;
+        padding:40px 20px;
+    }
+
+    .hero h1{
+        font-size:32px;
+    }
+
+    .hero p{
+        font-size:14px;
+    }
+
+    .quick-boxes{
+        grid-template-columns:
+            repeat(2,1fr);
+        margin-top:-15px;
+    }
+
+    .quick-box{
+        padding:14px;
+    }
+
+    .categories{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .product-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+        gap:9px;
+    }
+
+    .product{
+        padding:9px;
+    }
+
+    .product-image{
+        height:130px;
+        font-size:55px;
+    }
+
+    .product h3{
+        font-size:13px;
+    }
+
+    .product-price{
+        font-size:19px;
+    }
+
+    .deal-banner{
+        display:block;
+    }
+
+    .trust-grid{
+        grid-template-columns:1fr;
+    }
+
+    .footer-top{
+        grid-template-columns:1fr 1fr;
+        gap:18px;
+    }
+
+    .cart-drawer{
+        width:100%;
+        max-width:100%;
+    }
+
 }
 
 </style>
-
-<script>
-
-let cart=0
-let orders=[]
-
-function addCart(name){
-
-cart++
-document.getElementById("cartCount").innerText=cart
-
-orders.push(name)
-
-alert(name+" added to cart")
-
-}
-
-function showLogin(){
-document.getElementById("loginBox").style.display="block"
-}
-
-function closeLogin(){
-document.getElementById("loginBox").style.display="none"
-}
-
-function sellerUpload(){
-
-let name=document.getElementById("pname").value
-let price=document.getElementById("pprice").value
-
-alert("Product submitted: "+name+" price "+price+" Pi")
-
-}
-
-function showOrders(){
-
-alert("Orders: "+orders.join(", "))
-
-}
-
-</script>
-
 </head>
+
 
 <body>
 
-<header>
 
-<div class="logo">1shop.pi</div>
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
-<nav>
-<a href="#">Home</a>
-<a href="#">Categories</a>
-<a href="#" onclick="showOrders()">Orders</a>
-<a href="#" onclick="showLogin()">Login</a>
-</nav>
+<header class="header">
 
-<div class="cart">
-🛒 <span id="cartCount">0</span>
+<a
+    href="#home"
+    class="logo"
+>
+    1Shop<span>.pi</span>
+    <small>PI POWERED MARKETPLACE</small>
+</a>
+
+
+<div class="location">
+
+    Deliver to
+
+    <strong>
+        India
+    </strong>
+
 </div>
+
+
+<div class="search-box">
+
+<select id="searchCategory">
+
+<option value="all">
+All
+</option>
+
+<option value="Electronics">
+Electronics
+</option>
+
+<option value="Fashion">
+Fashion
+</option>
+
+<option value="Home">
+Home
+</option>
+
+<option value="Grocery">
+Grocery
+</option>
+
+<option value="Beauty">
+Beauty
+</option>
+
+</select>
+
+
+<input
+    id="searchInput"
+    type="search"
+    placeholder="Search 1Shop.pi products..."
+>
+
+
+<button
+    class="search-btn"
+    onclick="searchProducts()"
+>
+    🔍
+</button>
+
+</div>
+
+
+<div
+    class="account"
+    onclick="openLogin()"
+>
+
+    Hello, Sign in
+
+    <strong>
+        Account & Login
+    </strong>
+
+</div>
+
+
+<button
+    class="cart-button"
+    onclick="openCart()"
+>
+
+<span class="cart-icon">
+    🛒
+</span>
+
+Cart
+
+<span
+    id="cartCount"
+    class="cart-count"
+>
+    0
+</span>
+
+</button>
 
 </header>
 
-<div class="banner">
 
-<h1>Welcome to 1shop.pi</h1>
-<p>The Future Pi Powered Marketplace</p>
+<!-- =====================================================
+     NAV
+     ===================================================== -->
+
+<nav class="main-nav">
+
+<a
+    class="menu-button"
+    href="#categories"
+>
+    ☰ All
+</a>
+
+<a href="#deals">
+    Today's Deals
+</a>
+
+<a href="#products">
+    Popular Products
+</a>
+
+<a href="#categories">
+    Categories
+</a>
+
+<a href="#seller">
+    Sell on 1Shop.pi
+</a>
+
+<a href="#pi-payment">
+    Pi Payment
+</a>
+
+<a href="#help">
+    Customer Service
+</a>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+<div class="hero-content">
+
+<div class="hero-badge">
+    🟡 Powered by Pi Ecosystem
+</div>
+
+<h1>
+    Shop smarter.
+    <br>
+    <span>Pay with Pi.</span>
+</h1>
+
+<p>
+    Welcome to 1Shop.pi — a modern marketplace
+    designed for the Pi ecosystem. Discover products,
+    compare prices, add items to your cart and build
+    a new Pi-powered shopping experience.
+</p>
+
+
+<div class="hero-buttons">
+
+<button
+    class="primary-btn"
+    onclick="scrollToProducts()"
+>
+    Shop Now
+</button>
+
+
+<button
+    class="secondary-btn"
+    onclick="openSeller()"
+>
+    Start Selling
+</button>
 
 </div>
 
-<div class="container">
+</div>
 
-<h2>Popular Products</h2>
+</section>
 
-<div class="products">
 
-<div class="card">
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
 
-<img src="https://via.placeholder.com/200">
+<main class="container">
 
-<h3>Mobile Phone</h3>
 
-<p>Price: 5 Pi</p>
+<!-- QUICK BOXES -->
 
-⭐ ⭐ ⭐ ⭐
+<section class="quick-boxes">
 
-<button onclick="addCart('Mobile Phone')">
-Buy with Pi
+<div class="quick-box">
+
+<div class="quick-icon">
+    🪙
+</div>
+
+<h3>
+    Pi Payments
+</h3>
+
+<p>
+    Pay for marketplace products
+    using Pi after official integration.
+</p>
+
+</div>
+
+
+<div class="quick-box">
+
+<div class="quick-icon">
+    🚚
+</div>
+
+<h3>
+    Marketplace
+</h3>
+
+<p>
+    Discover products from
+    different sellers.
+</p>
+
+</div>
+
+
+<div class="quick-box">
+
+<div class="quick-icon">
+    🔐
+</div>
+
+<h3>
+    Pi Login
+</h3>
+
+<p>
+    Sign in using the Pi ecosystem
+    after app configuration.
+</p>
+
+</div>
+
+
+<div class="quick-box">
+
+<div class="quick-icon">
+    🏪
+</div>
+
+<h3>
+    Become a Seller
+</h3>
+
+<p>
+    Create your seller account
+    and list products.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CATEGORIES
+     ===================================================== -->
+
+<section
+    class="section"
+    id="categories"
+>
+
+<div class="section-title">
+
+<h2>
+    Shop by Category
+</h2>
+
+<span
+    class="view-all"
+    onclick="showAllProducts()"
+>
+    See all
+</span>
+
+</div>
+
+
+<div class="categories">
+
+
+<div
+    class="category"
+    onclick="filterCategory('Electronics')"
+>
+
+<div class="category-icon">
+    📱
+</div>
+
+<strong>
+    Electronics
+</strong>
+
+</div>
+
+
+<div
+    class="category"
+    onclick="filterCategory('Fashion')"
+>
+
+<div class="category-icon">
+    👕
+</div>
+
+<strong>
+    Fashion
+</strong>
+
+</div>
+
+
+<div
+    class="category"
+    onclick="filterCategory('Home')"
+>
+
+<div class="category-icon">
+    🏠
+</div>
+
+<strong>
+    Home
+</strong>
+
+</div>
+
+
+<div
+    class="category"
+    onclick="filterCategory('Grocery')"
+>
+
+<div class="category-icon">
+    🛒
+</div>
+
+<strong>
+    Grocery
+</strong>
+
+</div>
+
+
+<div
+    class="category"
+    onclick="filterCategory('Beauty')"
+>
+
+<div class="category-icon">
+    💄
+</div>
+
+<strong>
+    Beauty
+</strong>
+
+</div>
+
+
+<div
+    class="category"
+    onclick="filterCategory('Mobiles')"
+>
+
+<div class="category-icon">
+    📲
+</div>
+
+<strong>
+    Mobiles
+</strong>
+
+</div>
+
+
+<div
+    class="category"
+    onclick="filterCategory('Services')"
+>
+
+<div class="category-icon">
+    🛠️
+</div>
+
+<strong>
+    Services
+</strong>
+
+</div>
+
+
+<div
+    class="category"
+    onclick="filterCategory('Other')"
+>
+
+<div class="category-icon">
+    📦
+</div>
+
+<strong>
+    Other
+</strong>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     DEAL BANNER
+     ===================================================== -->
+
+<section
+    class="section"
+    id="deals"
+>
+
+<div class="deal-banner">
+
+<div>
+
+<h2>
+    Pi Marketplace Deals
+</h2>
+
+<p>
+    Explore products listed on 1Shop.pi
+    and discover marketplace offers.
+</p>
+
+</div>
+
+
+<button
+    class="primary-btn"
+    onclick="scrollToProducts()"
+>
+    Explore Deals
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PRODUCTS
+     ===================================================== -->
+
+<section
+    class="section"
+    id="products"
+>
+
+<div class="section-title">
+
+<h2 id="productTitle">
+    Popular Products
+</h2>
+
+<span
+    class="view-all"
+    onclick="showAllProducts()"
+>
+    View all
+</span>
+
+</div>
+
+
+<div
+    class="product-grid"
+    id="productGrid"
+>
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SELLER
+     ===================================================== -->
+
+<section
+    class="section"
+    id="seller"
+>
+
+<div class="seller-section">
+
+<div class="section-title">
+
+<h2>
+    Sell on 1Shop.pi
+</h2>
+
+<button
+    class="primary-btn"
+    onclick="openSeller()"
+>
+    Seller Registration
 </button>
 
 </div>
 
 
-<div class="card">
+<div class="seller-grid">
 
-<img src="https://via.placeholder.com/200">
 
-<h3>Electronics</h3>
+<div class="seller-card">
 
-<p>Price: 8 Pi</p>
+<div class="quick-icon">
+    🏪
+</div>
 
-⭐ ⭐ ⭐ ⭐ ⭐
+<h3>
+    Create Seller Account
+</h3>
 
-<button onclick="addCart('Electronics')">
-Buy with Pi
+<p>
+    Create your seller profile and
+    prepare your marketplace store.
+</p>
+
+</div>
+
+
+<div class="seller-card">
+
+<div class="quick-icon">
+    📦
+</div>
+
+<h3>
+    Add Products
+</h3>
+
+<p>
+    Add product name, category,
+    price, description and inventory.
+</p>
+
+</div>
+
+
+<div class="seller-card">
+
+<div class="quick-icon">
+    📊
+</div>
+
+<h3>
+    Manage Orders
+</h3>
+
+<p>
+    Track orders, sales and
+    marketplace activity.
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SELLER DASHBOARD
+     ===================================================== -->
+
+<section
+    class="section dashboard"
+    id="dashboard"
+>
+
+<div class="section-title">
+
+<h2>
+    Seller Dashboard
+</h2>
+
+<button
+    class="secondary-btn"
+    style="
+        background:#232f3e;
+        color:#fff;
+    "
+    onclick="closeDashboard()"
+>
+    Close
 </button>
 
 </div>
 
 
-<div class="card">
+<div class="dashboard-grid">
 
-<img src="https://via.placeholder.com/200">
+<div class="dashboard-card">
 
-<h3>Clothes</h3>
+<span>
+    Products
+</span>
 
-<p>Price: 3 Pi</p>
+<strong>
+    0
+</strong>
 
-⭐ ⭐ ⭐ ⭐
+</div>
 
-<button onclick="addCart('Clothes')">
-Buy with Pi
+
+<div class="dashboard-card">
+
+<span>
+    Orders
+</span>
+
+<strong>
+    0
+</strong>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<span>
+    Sales
+</span>
+
+<strong>
+    0 Pi
+</strong>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<span>
+    Customers
+</span>
+
+<strong>
+    0
+</strong>
+
+</div>
+
+</div>
+
+
+<div class="dashboard-actions">
+
+<button
+    class="dashboard-action"
+    onclick="openProductForm()"
+>
+
+<h3>
+    ➕ Add Product
+</h3>
+
+<p>
+    Create a new product listing.
+</p>
+
+</button>
+
+
+<button
+    class="dashboard-action"
+>
+
+<h3>
+    📦 Orders
+</h3>
+
+<p>
+    View customer orders.
+</p>
+
+</button>
+
+
+<button
+    class="dashboard-action"
+>
+
+<h3>
+    ⚙️ Store Settings
+</h3>
+
+<p>
+    Manage seller information.
+</p>
+
 </button>
 
 </div>
 
+</section>
 
-<div class="card">
 
-<img src="https://via.placeholder.com/200">
+<!-- =====================================================
+     TRUST
+     ===================================================== -->
 
-<h3>Grocery</h3>
+<section
+    class="section"
+    id="pi-payment"
+>
 
-<p>Price: 2 Pi</p>
+<div class="section-title">
 
-⭐ ⭐ ⭐
-
-<button onclick="addCart('Grocery')">
-Buy with Pi
-</button>
+<h2>
+    Why 1Shop.pi?
+</h2>
 
 </div>
 
+
+<div class="trust-grid">
+
+
+<div class="trust-card">
+
+<div class="icon">
+    🔐
 </div>
 
+<h3>
+    Secure Login
+</h3>
+
+<p>
+    Pi Login integration structure
+    is ready for official SDK setup.
+</p>
+
 </div>
 
 
-<div class="sell">
+<div class="trust-card">
 
-<h2>Seller Dashboard</h2>
+<div class="icon">
+    🪙
+</div>
 
-<input id="pname" placeholder="Product name">
+<h3>
+    Pi Payment
+</h3>
+
+<p>
+    Marketplace prices can be
+    displayed in Pi.
+</p>
+
+</div>
+
+
+<div class="trust-card">
+
+<div class="icon">
+    📦
+</div>
+
+<h3>
+    Seller Marketplace
+</h3>
+
+<p>
+    Built with future seller,
+    product and order systems in mind.
+</p>
+
+</div>
+
+
+<div class="trust-card">
+
+<div class="icon">
+    📱
+</div>
+
+<h3>
+    Mobile Friendly
+</h3>
+
+<p>
+    Designed for Android,
+    iPhone, tablet and desktop.
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     HELP
+     ===================================================== -->
+
+<section
+    class="section"
+    id="help"
+>
+
+<div class="seller-section">
+
+<h2>
+    Customer Service
+</h2>
+
+<p
+    style="
+        margin-top:10px;
+        color:#667085;
+    "
+>
+    Need help with an order, seller account
+    or marketplace service? Customer support
+    functionality can be connected to your
+    backend later.
+</p>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+<div class="footer-top">
+
+
+<div class="footer-column">
+
+<h3>
+    Get to Know 1Shop.pi
+</h3>
+
+<a href="#home">
+    About 1Shop.pi
+</a>
+
+<a href="#seller">
+    Sell on 1Shop.pi
+</a>
+
+<a href="#pi-payment">
+    Pi Marketplace
+</a>
+
+</div>
+
+
+<div class="footer-column">
+
+<h3>
+    Marketplace
+</h3>
+
+<a href="#categories">
+    Categories
+</a>
+
+<a href="#products">
+    Products
+</a>
+
+<a href="#deals">
+    Deals
+</a>
+
+</div>
+
+
+<div class="footer-column">
+
+<h3>
+    Seller
+</h3>
+
+<a href="#seller">
+    Seller Registration
+</a>
+
+<a href="#seller">
+    Seller Dashboard
+</a>
+
+<a href="#seller">
+    Product Listing
+</a>
+
+</div>
+
+
+<div class="footer-column">
+
+<h3>
+    Support
+</h3>
+
+<a href="#help">
+    Customer Service
+</a>
+
+<a href="#help">
+    Help Center
+</a>
+
+<a href="#help">
+    Contact
+</a>
+
+</div>
+
+
+</div>
+
+
+<div class="footer-bottom">
+
+© 2026 1Shop.pi — Pi Powered Marketplace
 
 <br><br>
 
-<input id="pprice" placeholder="Price Pi">
-
-<br><br>
-
-<button onclick="sellerUpload()">
-Upload Product
-</button>
+Independent marketplace project.
+Not affiliated with Amazon or Pi Network.
 
 </div>
-
-
-<div id="loginBox" class="popup">
-
-<h3>Login</h3>
-
-<input placeholder="Email">
-
-<br><br>
-
-<input placeholder="Password">
-
-<br><br>
-
-<button>Login</button>
-
-<button onclick="closeLogin()">Close</button>
-
-</div>
-
-<footer>
-
-© 1shop.pi Pi Powered Marketplace
 
 </footer>
+
+
+<!-- =====================================================
+     CART OVERLAY
+     ===================================================== -->
+
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    onclick="closeCart()"
+>
+</div>
+
+
+<!-- =====================================================
+     CART DRAWER
+     ===================================================== -->
+
+<aside
+    class="cart-drawer"
+    id="cartDrawer"
+>
+
+<div class="cart-header">
+
+<h2>
+    Shopping Cart
+</h2>
+
+<button
+    class="close-cart"
+    onclick="closeCart()"
+>
+    ×
+</button>
+
+</div>
+
+
+<div id="cartItems">
+
+<p
+    style="
+        padding:20px 0;
+        color:#667085;
+    "
+>
+    Your cart is empty.
+</p>
+
+</div>
+
+
+<div class="cart-summary">
+
+<div class="cart-total">
+
+<span>
+    Total
+</span>
+
+<span>
+    π <span id="cartTotal">
+        0
+    </span>
+</span>
+
+</div>
+
+
+<button
+    class="pi-pay-btn"
+    onclick="startPiPayment()"
+>
+    🪙 Continue with Pi
+</button>
+
+</div>
+
+</aside>
+
+
+<!-- =====================================================
+     LOGIN MODAL
+     ===================================================== -->
+
+<div
+    class="modal"
+    id="loginModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+    Pi Login
+</h2>
+
+<button
+    class="modal-close"
+    onclick="closeModal('loginModal')"
+>
+    ×
+</button>
+
+</div>
+
+
+<p
+    style="
+        color:#667085;
+        line-height:1.5;
+        margin-bottom:20px;
+    "
+>
+    Sign in using Pi after the application
+    has been configured in the official
+    Pi Developer Portal.
+</p>
+
+
+<button
+    class="submit-btn"
+    onclick="piLogin()"
+>
+    🟡 Continue with Pi
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     SELLER MODAL
+     ===================================================== -->
+
+<div
+    class="modal"
+    id="sellerModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+    Seller Registration
+</h2>
+
+<button
+    class="modal-close"
+    onclick="closeModal('sellerModal')"
+>
+    ×
+</button>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Store Name
+</label>
+
+<input
+    id="sellerStore"
+    type="text"
+    placeholder="Your store name"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Owner Name
+</label>
+
+<input
+    id="sellerOwner"
+    type="text"
+    placeholder="Your name"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Email
+</label>
+
+<input
+    id="sellerEmail"
+    type="email"
+    placeholder="seller@example.com"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Product Category
+</label>
+
+<select>
+
+<option>
+    Electronics
+</option>
+
+<option>
+    Fashion
+</option>
+
+<option>
+    Grocery
+</option>
+
+<option>
+    Home
+</option>
+
+<option>
+    Beauty
+</option>
+
+<option>
+    Other
+</option>
+
+</select>
+
+</div>
+
+
+<button
+    class="submit-btn"
+    onclick="registerSeller()"
+>
+    Create Seller Profile
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     PRODUCT MODAL
+     ===================================================== -->
+
+<div
+    class="modal"
+    id="productModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+    Add Product
+</h2>
+
+<button
+    class="modal-close"
+    onclick="closeModal('productModal')"
+>
+    ×
+</button>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Product Name
+</label>
+
+<input
+    id="newProductName"
+    type="text"
+    placeholder="Product name"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Price in Pi
+</label>
+
+<input
+    id="newProductPrice"
+    type="number"
+    min="0"
+    placeholder="Price"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Category
+</label>
+
+<select id="newProductCategory">
+
+<option>
+    Electronics
+</option>
+
+<option>
+    Fashion
+</option>
+
+<option>
+    Home
+</option>
+
+<option>
+    Grocery
+</option>
+
+<option>
+    Beauty
+</option>
+
+<option>
+    Mobiles
+</option>
+
+<option>
+    Other
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+    Description
+</label>
+
+<textarea
+    id="newProductDescription"
+    placeholder="Product description"
+></textarea>
+
+</div>
+
+
+<button
+    class="submit-btn"
+    onclick="addSellerProduct()"
+>
+    Publish Product
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+     ===================================================== -->
+
+<div
+    class="toast"
+    id="toast"
+>
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script>
+
+/* =====================================================
+   PRODUCT DATABASE - FRONTEND DEMO
+   ===================================================== */
+
+let products = [
+
+{
+    id:1,
+    name:"Smartphone Pro",
+    category:"Electronics",
+    price:25,
+    icon:"📱",
+    rating:5,
+    reviews:128,
+    badge:"Popular"
+},
+
+{
+    id:2,
+    name:"Wireless Earbuds",
+    category:"Electronics",
+    price:8,
+    icon:"🎧",
+    rating:4,
+    reviews:89,
+    badge:"Deal"
+},
+
+{
+    id:3,
+    name:"Premium T-Shirt",
+    category:"Fashion",
+    price:3,
+    icon:"👕",
+    rating:4,
+    reviews:210,
+    badge:""
+},
+
+{
+    id:4,
+    name:"Running Shoes",
+    category:"Fashion",
+    price:12,
+    icon:"👟",
+    rating:5,
+    reviews:156,
+    badge:"Popular"
+},
+
+{
+    id:5,
+    name:"Coffee Maker",
+    category:"Home",
+    price:15,
+    icon:"☕",
+    rating:4,
+    reviews:72,
+    badge:""
+},
+
+{
+    id:6,
+    name:"Kitchen Set",
+    category:"Home",
+    price:9,
+    icon:"🍳",
+    rating:5,
+    reviews:61,
+    badge:"Deal"
+},
+
+{
+    id:7,
+    name:"Organic Grocery Box",
+    category:"Grocery",
+    price:6,
+    icon:"🥦",
+    rating:4,
+    reviews:184,
+    badge:""
+},
+
+{
+    id:8,
+    name:"Skincare Kit",
+    category:"Beauty",
+    price:10,
+    icon:"🧴",
+    rating:5,
+    reviews:94,
+    badge:"Popular"
+},
+
+{
+    id:9,
+    name:"Gaming Phone",
+    category:"Mobiles",
+    price:35,
+    icon:"📲",
+    rating:5,
+    reviews:119,
+    badge:"New"
+},
+
+{
+    id:10,
+    name:"Bluetooth Speaker",
+    category:"Electronics",
+    price:7,
+    icon:"🔊",
+    rating:4,
+    reviews:73,
+    badge:"Deal"
+}
+
+];
+
+
+/* =====================================================
+   CART
+   ===================================================== */
+
+let cart = [];
+
+
+/* =====================================================
+   RENDER PRODUCTS
+   ===================================================== */
+
+function renderProducts(list){
+
+const grid =
+document.getElementById(
+    "productGrid"
+);
+
+if(list.length === 0){
+
+grid.innerHTML = `
+
+<div
+    style="
+        grid-column:1/-1;
+        background:#fff;
+        padding:40px;
+        text-align:center;
+        border-radius:5px;
+    "
+>
+
+<h3>
+    No products found
+</h3>
+
+<p
+    style="
+        margin-top:8px;
+        color:#667085;
+    "
+>
+    Try another search or category.
+</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+grid.innerHTML =
+list.map(product => `
+
+<article class="product">
+
+${product.badge
+?
+`
+<div class="product-badge">
+    ${product.badge}
+</div>
+`
+:
+""
+}
+
+
+<div class="product-image">
+
+    ${product.icon}
+
+</div>
+
+
+<h3>
+    ${escapeHtml(product.name)}
+</h3>
+
+
+<div class="rating">
+
+    ${stars(product.rating)}
+
+    <span class="rating-count">
+        (${product.reviews})
+    </span>
+
+</div>
+
+
+<div class="product-price">
+
+    <small>π</small>
+    ${product.price}
+
+</div>
+
+
+<button
+    class="add-cart"
+    onclick="addToCart(${product.id})"
+>
+    Add to Cart
+</button>
+
+
+<button
+    class="buy-now"
+    onclick="buyNow(${product.id})"
+>
+    Buy Now
+</button>
+
+
+</article>
+
+`).join("");
+
+}
+
+
+/* =====================================================
+   STARS
+   ===================================================== */
+
+function stars(number){
+
+return "★".repeat(number)
++
+"☆".repeat(5-number);
+
+}
+
+
+/* =====================================================
+   SEARCH
+   ===================================================== */
+
+function searchProducts(){
+
+const query =
+document
+.getElementById("searchInput")
+.value
+.trim()
+.toLowerCase();
+
+
+const category =
+document
+.getElementById("searchCategory")
+.value;
+
+
+let result =
+products.filter(product => {
+
+const matchesSearch =
+(
+product.name +
+" " +
+product.category
+)
+.toLowerCase()
+.includes(query);
+
+
+const matchesCategory =
+category === "all" ||
+product.category === category;
+
+
+return matchesSearch &&
+matchesCategory;
+
+});
+
+
+document.getElementById(
+    "productTitle"
+).textContent =
+query
+?
+`Search results for "${query}"`
+:
+category === "all"
+?
+"Popular Products"
+:
+category + " Products";
+
+
+renderProducts(result);
+
+scrollToProducts();
+
+}
+
+
+/* ENTER SEARCH */
+
+document
+.getElementById("searchInput")
+.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            searchProducts();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   CATEGORY
+   ===================================================== */
+
+function filterCategory(category){
+
+const result =
+products.filter(
+product =>
+product.category === category
+);
+
+
+document.getElementById(
+    "productTitle"
+).textContent =
+category + " Products";
+
+
+renderProducts(result);
+
+scrollToProducts();
+
+}
+
+
+/* =====================================================
+   SHOW ALL
+   ===================================================== */
+
+function showAllProducts(){
+
+document.getElementById(
+    "productTitle"
+).textContent =
+"Popular Products";
+
+
+document.getElementById(
+    "searchInput"
+).value = "";
+
+
+renderProducts(products);
+
+scrollToProducts();
+
+}
+
+
+/* =====================================================
+   SCROLL
+   ===================================================== */
+
+function scrollToProducts(){
+
+document
+.getElementById("products")
+.scrollIntoView({
+    behavior:"smooth"
+});
+
+}
+
+
+/* =====================================================
+   ADD TO CART
+   ===================================================== */
+
+function addToCart(id){
+
+const product =
+products.find(
+p => p.id === id
+);
+
+
+if(!product){
+    return;
+}
+
+
+cart.push(product);
+
+updateCart();
+
+showToast(
+    product.name +
+    " added to cart"
+);
+
+}
+
+
+/* =====================================================
+   BUY NOW
+   ===================================================== */
+
+function buyNow(id){
+
+const product =
+products.find(
+p => p.id === id
+);
+
+
+if(!product){
+    return;
+}
+
+
+cart = [product];
+
+updateCart();
+
+openCart();
+
+}
+
+
+/* =====================================================
+   UPDATE CART
+   ===================================================== */
+
+function updateCart(){
+
+document.getElementById(
+    "cartCount"
+).textContent =
+cart.length;
+
+
+const container =
+document.getElementById(
+    "cartItems"
+);
+
+
+if(cart.length === 0){
+
+container.innerHTML = `
+
+<p
+    style="
+        padding:20px 0;
+        color:#667085;
+    "
+>
+    Your cart is empty.
+</p>
+
+`;
+
+document.getElementById(
+    "cartTotal"
+).textContent = "0";
+
+return;
+
+}
+
+
+container.innerHTML =
+cart.map(
+(product,index)=>`
+
+<div class="cart-item">
+
+
+<div class="cart-item-image">
+    ${product.icon}
+</div>
+
+
+<div class="cart-item-info">
+
+<h4>
+    ${escapeHtml(product.name)}
+</h4>
+
+<div class="cart-item-price">
+    π ${product.price}
+</div>
+
+</div>
+
+
+<button
+    class="remove-item"
+    onclick="removeFromCart(${index})"
+>
+    Remove
+</button>
+
+
+</div>
+
+`
+).join("");
+
+
+const total =
+cart.reduce(
+    (sum,product)=>
+    sum + Number(product.price),
+    0
+);
+
+
+document.getElementById(
+    "cartTotal"
+).textContent =
+total;
+
+}
+
+
+/* =====================================================
+   REMOVE CART
+   ===================================================== */
+
+function removeFromCart(index){
+
+cart.splice(index,1);
+
+updateCart();
+
+}
+
+
+/* =====================================================
+   OPEN CART
+   ===================================================== */
+
+function openCart(){
+
+document
+.getElementById("cartDrawer")
+.classList.add("active");
+
+document
+.getElementById("cartOverlay")
+.classList.add("active");
+
+}
+
+
+/* =====================================================
+   CLOSE CART
+   ===================================================== */
+
+function closeCart(){
+
+document
+.getElementById("cartDrawer")
+.classList.remove("active");
+
+document
+.getElementById("cartOverlay")
+.classList.remove("active");
+
+}
+
+
+/* =====================================================
+   LOGIN
+   ===================================================== */
+
+function openLogin(){
+
+document
+.getElementById("loginModal")
+.classList.add("active");
+
+}
+
+
+/* =====================================================
+   SELLER
+   ===================================================== */
+
+function openSeller(){
+
+document
+.getElementById("sellerModal")
+.classList.add("active");
+
+}
+
+
+/* =====================================================
+   MODAL CLOSE
+   ===================================================== */
+
+function closeModal(id){
+
+document
+.getElementById(id)
+.classList.remove("active");
+
+}
+
+
+/* =====================================================
+   SELLER REGISTRATION
+   ===================================================== */
+
+function registerSeller(){
+
+const store =
+document
+.getElementById("sellerStore")
+.value
+.trim();
+
+
+const owner =
+document
+.getElementById("sellerOwner")
+.value
+.trim();
+
+
+const email =
+document
+.getElementById("sellerEmail")
+.value
+.trim();
+
+
+if(!store || !owner || !email){
+
+showToast(
+    "Please complete all required fields."
+);
+
+return;
+
+}
+
+
+closeModal("sellerModal");
+
+
+document
+.getElementById("dashboard")
+.classList.add("active");
+
+
+document
+.getElementById("dashboard")
+.scrollIntoView({
+    behavior:"smooth"
+});
+
+
+showToast(
+    "Seller profile created in demo mode."
+);
+
+}
+
+
+/* =====================================================
+   CLOSE DASHBOARD
+   ===================================================== */
+
+function closeDashboard(){
+
+document
+.getElementById("dashboard")
+.classList.remove("active");
+
+}
+
+
+/* =====================================================
+   PRODUCT FORM
+   ===================================================== */
+
+function openProductForm(){
+
+document
+.getElementById("productModal")
+.classList.add("active");
+
+}
+
+
+/* =====================================================
+   ADD SELLER PRODUCT
+   ===================================================== */
+
+function addSellerProduct(){
+
+const name =
+document
+.getElementById("newProductName")
+.value
+.trim();
+
+
+const price =
+Number(
+document
+.getElementById("newProductPrice")
+.value
+);
+
+
+const category =
+document
+.getElementById("newProductCategory")
+.value;
+
+
+if(!name || !price){
+
+showToast(
+    "Product name and price are required."
+);
+
+return;
+
+}
+
+
+const newProduct = {
+
+id:
+Date.now(),
+
+name:name,
+
+category:category,
+
+price:price,
+
+icon:"📦",
+
+rating:5,
+
+reviews:0,
+
+badge:"New"
+
+};
+
+
+products.unshift(newProduct);
+
+
+renderProducts(products);
+
+
+closeModal(
+    "productModal"
+);
+
+
+document
+.getElementById("newProductName")
+.value = "";
+
+
+document
+.getElementById("newProductPrice")
+.value = "";
+
+
+document
+.getElementById("newProductDescription")
+.value = "";
+
+
+showToast(
+    "Product added in demo mode."
+);
+
+}
+
+
+/* =====================================================
+   PI LOGIN
+   ===================================================== */
+
+async function piLogin(){
+
+/*
+
+IMPORTANT:
+
+This frontend contains the Pi Login
+structure.
+
+Before production, configure the app
+inside Pi Developer Portal and initialize
+the official Pi SDK.
+
+*/
+
+if(!window.Pi){
+
+showToast(
+    "Pi SDK is not available here. Open the app in Pi Browser after SDK configuration."
+);
+
+return;
+
+}
+
+
+try{
+
+const auth =
+await Pi.authenticate(
+    ["username"],
+    function(){
+
+        console.log(
+            "Incomplete payment detected."
+        );
+
+    }
+);
+
+
+console.log(
+    "Pi user:",
+    auth.user
+);
+
+
+closeModal(
+    "loginModal"
+);
+
+
+showToast(
+    "Pi Login successful."
+);
+
+}
+
+catch(error){
+
+console.error(error);
+
+showToast(
+    "Pi Login could not be completed."
+);
+
+}
+
+}
+
+
+/* =====================================================
+   PI PAYMENT
+   ===================================================== */
+
+function startPiPayment(){
+
+if(cart.length === 0){
+
+showToast(
+    "Your cart is empty."
+);
+
+return;
+
+}
+
+
+const total =
+cart.reduce(
+    (sum,product)=>
+    sum + Number(product.price),
+    0
+);
+
+
+/*
+
+IMPORTANT:
+
+A real Pi payment requires:
+
+1. Pi.authenticate()
+2. Pi.createPayment()
+3. Backend payment approval
+4. Backend payment completion
+5. Server-side validation
+
+Do NOT put private server/API keys
+inside this HTML file.
+
+*/
+
+if(!window.Pi){
+
+showToast(
+    "Pi SDK is not available. Configure the app in Pi Developer Portal first."
+);
+
+return;
+
+}
+
+
+showToast(
+    "Pi payment is ready for backend integration. Total: π " +
+    total
+);
+
+}
+
+
+/* =====================================================
+   TOAST
+   ===================================================== */
+
+function showToast(message){
+
+const toast =
+document.getElementById("toast");
+
+
+toast.textContent =
+message;
+
+
+toast.style.display =
+"block";
+
+
+clearTimeout(
+    window.toastTimer
+);
+
+
+window.toastTimer =
+setTimeout(
+function(){
+
+toast.style.display =
+"none";
+
+},
+3000
+);
+
+}
+
+
+/* =====================================================
+   HTML ESCAPE
+   ===================================================== */
+
+function escapeHtml(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+   ===================================================== */
+
+renderProducts(products);
+
+updateCart();
+
+</script>
+
+
+<!-- =====================================================
+     OFFICIAL PI SDK
+     ===================================================== -->
+
+<script
+src="https://sdk.minepi.com/pi-sdk.js">
+</script>
+
+
+<script>
+
+/*
+
+Pi SDK initialization.
+
+For development/sandbox:
+
+Pi.init({
+    version:"2.0",
+    sandbox:true
+});
+
+For production:
+
+Pi.init({
+    version:"2.0",
+    sandbox:false
+});
+
+Do not activate production mode until
+your Pi Developer Portal configuration
+is complete.
+
+*/
+
+</script>
+
 
 </body>
 </html>
